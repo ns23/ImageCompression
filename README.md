@@ -47,4 +47,5 @@ usage: imgCompress.py [-h]
     optional arguments:
         -d DIRECTORY, --dir DIRECTORY Compress all images from folder / subfolder
         -f FILENAME, --file FILENAME Compress a single image file
+        -q QUALITY, --quality QUALITY set quality parameter (Default:60)
 ```
