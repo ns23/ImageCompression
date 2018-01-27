@@ -1,32 +1,18 @@
 import piexif
-import os
 from PIL import Image
+import sys
 from core import handle
 from core import const
+from core import internals
 
 Copyright = "Paresh Sawant"  # add name of copyright holder
 Artist = "Paresh Sawant"  # add name of attist
-quality = 70
 
-
-def get_images(path):
-    os.chdir(path)
-    return [f for f in os.listdir(path) if os.path.isfile(f)]
-    pass
-
-
-def get_all_images(root):
-    valid_format = ['JPG', 'JPEG']
-    response = []
-    for path, subdirs, files in os.walk(root):
-        for name in files:
-            extension = name.split('.')[-1:][0].upper()
-            if extension in valid_format:
-                # print str(i) + " " + str(os.path.join(path, name))
-                response.append(os.path.join(path, name))
-
-    return response
-
+def compress_file(filePath):
+    if internals.is_valid_path(filePath):
+        compress_image([filePath])
+    else:
+        print "Not a valid file format"    
 
 def modify_exif(exif_dict):
     global Copyright, Artist
@@ -60,10 +46,16 @@ def compress_image(imagefiles):
 
 
 if __name__ == '__main__':
-    const.args =  handle.get_arguments();
-    if const.args.dir:
-        image_files = get_all_images(const.args.dir)
-        compress_image(image_files)
-    elif const.args.file:
-        print "Write logic to compress single file"
-        pass    
+    const.args =  handle.get_arguments()
+    
+    try:
+        if const.args.dir:
+            image_files = internals.get_all_images(const.args.dir)
+            compress_image(image_files)
+        elif const.args.file:
+            compress_file(const.args.file)
+        sys.exit(0)
+    except KeyboardInterrupt as e:
+        sys.exit(3)
+        pass
+        
