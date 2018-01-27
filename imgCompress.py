@@ -1,6 +1,8 @@
 import piexif
 import os
 from PIL import Image
+from core import handle
+from core import const
 
 Copyright = "Paresh Sawant"  # add name of copyright holder
 Artist = "Paresh Sawant"  # add name of attist
@@ -45,7 +47,7 @@ def compress_image(imagefiles):
             im = Image.open(image_path)
             exif_dict = modify_exif(piexif.load(im.info["exif"]))
             exif_bytes = piexif.dump(exif_dict)
-            im.save(image_path, "jpeg", exif=exif_bytes, quality=quality)
+            im.save(image_path, "jpeg", exif=exif_bytes, quality=const.args.quality)
             im.close()
             pass
         except IOError:
@@ -56,7 +58,12 @@ def compress_image(imagefiles):
             print("Processed: " + str(count) + "/" + str(file_count))
 
 
-path = raw_input("Enter the path: ")
-image_files = get_all_images(path)
-compress_image(image_files)
-# get_all_images(path)
+
+if __name__ == '__main__':
+    const.args =  handle.get_arguments();
+    if const.args.dir:
+        image_files = get_all_images(const.args.dir)
+        compress_image(image_files)
+    elif const.args.file:
+        print "Write logic to compress single file"
+        pass    
