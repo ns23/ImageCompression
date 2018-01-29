@@ -8,11 +8,13 @@ from core import internals
 Copyright = "Paresh Sawant"  # add name of copyright holder
 Artist = "Paresh Sawant"  # add name of attist
 
+
 def compress_file(filePath):
     if internals.is_valid_path(filePath):
         compress_image([filePath])
     else:
-        print "Not a valid file format"    
+        print "Not a valid file format"
+
 
 def modify_exif(exif_dict):
     global Copyright, Artist
@@ -29,11 +31,15 @@ def compress_image(imagefiles):
     count = 0
     for image_path in imagefiles:
         try:
-            # image_path = path + '/' + image
             im = Image.open(image_path)
             exif_dict = modify_exif(piexif.load(im.info["exif"]))
             exif_bytes = piexif.dump(exif_dict)
-            im.save(image_path, "jpeg", exif=exif_bytes, quality=const.args.quality)
+            if const.args.output:
+                rel_dir = image_path.split(const.args.dir)[1]
+                image_path = const.args.output + rel_dir
+                pass
+            im.save(image_path, "jpeg", exif=exif_bytes,
+                    quality=const.args.quality)
             im.close()
             pass
         except IOError:
@@ -44,10 +50,16 @@ def compress_image(imagefiles):
             print("Processed: " + str(count) + "/" + str(file_count))
 
 
-
 if __name__ == '__main__':
-    const.args =  handle.get_arguments()
-    
+    const.args = handle.get_arguments()
+
+    # check if outpu folder paramter is provided
+    if const.args.output:
+        if internals.is_valid_folder(const.args.output):
+            print "valid folder"
+        else:
+            print "Invalid output directory"
+
     try:
         if const.args.dir:
             image_files = internals.get_all_images(const.args.dir)
@@ -58,4 +70,3 @@ if __name__ == '__main__':
     except KeyboardInterrupt as e:
         sys.exit(3)
         pass
-        

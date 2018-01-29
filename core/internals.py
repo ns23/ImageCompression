@@ -2,10 +2,12 @@ import os
 
 valid_format = ['JPG', 'JPEG']
 
+
 def get_images(path):
     """"""
     os.chdir(path)
     return [f for f in os.listdir(path) if os.path.isfile(f)]
+
 
 def get_all_images(root):
     """Get images from all folders and subfolders"""
@@ -19,13 +21,37 @@ def get_all_images(root):
 
     return response
 
+
 def is_valid_path(filePath):
+    """ Check if file path is valid """
     respone = False
-    if os.path.isfile(filePath):
+    if os.path.isfile(filePath):  # split this code
         extension = filePath.split('.')[-1:][0].upper()
         if extension in valid_format:
-            respone = True;
+            respone = True
 
-    return respone        
+    return respone
+
+
+def is_valid_folder(folderPath):
+    """ Check if folder exists """
+    respone = False
+    if os.path.isdir(folderPath):
+        respone = True
+    elif create_folder(folderPath):
+        respone = True
+    return respone
+
+
+def create_folder(folderPath):
+    """ Create folder """
+    try:
+        os.makedirs(folderPath)
+        return True
+    except OSError:
+        return False
+
+def get_full_path(path):
+    pass
 
 
