@@ -4,6 +4,7 @@ import sys
 from core import handle
 from core import const
 from core import internals
+import os
 
 Copyright = "Paresh Sawant"  # add name of copyright holder
 Artist = "Paresh Sawant"  # add name of attist
@@ -34,10 +35,24 @@ def compress_image(imagefiles):
             im = Image.open(image_path)
             exif_dict = modify_exif(piexif.load(im.info["exif"]))
             exif_bytes = piexif.dump(exif_dict)
+
             if const.args.output:
-                rel_dir = image_path.split(const.args.dir)[1]
-                image_path = const.args.output + rel_dir
+                if const.args.dir:
+                    image_path = const.args.output + image_path.split(const.args.dir)[1]
+                elif const.args.file:
+
+                    rel_path = image_path.split(
+                        os.path.dirname(os.path.realpath(const.args.file)))
+                    if os.path.isdir(rel_path[0]):
+                        image_path = const.args.output+rel_path[1]
+                    else:
+                        image_path = const.args.output+const.args.file
+                        pass        
+
+                if not os.path.exists(os.path.dirname(image_path)):
+                    os.makedirs(os.path.dirname(image_path))
                 pass
+
             im.save(image_path, "jpeg", exif=exif_bytes,
                     quality=const.args.quality)
             im.close()
