@@ -1,2 +1,2 @@
-Pillow
-Piexif
+Pillow==5.0.0
+Piexif==1.0.13
