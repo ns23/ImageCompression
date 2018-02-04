@@ -15,6 +15,11 @@ def get_arguments():
         help='Image compression value'
     )
 
+    parser.add_argument(
+        '-o','--output',default=None,
+        help='Enter output directory'
+    )
+
     parsed = parser.parse_args()
 
     return parsed

@@ -1,3 +1,5 @@
 env/
 core/*.pyc
 pictures/
+pic/
+pic2/
