@@ -38,16 +38,19 @@ def compress_image(imagefiles):
 
             if const.args.output:
                 if const.args.dir:
-                    image_path = const.args.output + image_path.split(const.args.dir)[1]
+                    image_path = const.args.output + \
+                        image_path.split(const.args.dir)[1]
                 elif const.args.file:
 
                     rel_path = image_path.split(
                         os.path.dirname(os.path.realpath(const.args.file)))
                     if os.path.isdir(rel_path[0]):
-                        image_path = const.args.output+rel_path[1]
+                        image_path = os.path.join(
+                            const.args.output, rel_path[1])
                     else:
-                        image_path = const.args.output+const.args.file
-                        pass        
+                        image_path = os.path.join(
+                            const.args.output, const.args.file)
+                        pass
 
                 if not os.path.exists(os.path.dirname(image_path)):
                     os.makedirs(os.path.dirname(image_path))
@@ -68,13 +71,13 @@ def compress_image(imagefiles):
 if __name__ == '__main__':
     const.args = handle.get_arguments()
 
-    # check if outpu folder paramter is provided
+    # check if output folder paramter is provided
     if const.args.output:
         if internals.is_valid_folder(const.args.output):
             print "valid folder"
         else:
-            print "Invalid output directory"
-
+            # take default folder instead
+            sys.exit(0)
     try:
         if const.args.dir:
             image_files = internals.get_all_images(const.args.dir)

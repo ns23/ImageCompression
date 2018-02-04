@@ -2,7 +2,7 @@
 
 Python script to compress Images in a folder and all subfolders inside it without losing quality and exif information.
 
-In the script quality value is set to70 % of original value.Can be changed based on requiremnet
+In the script quality value is set to 60 % of original value.Can be changed based on requiremnet
 
 ## Dependencies
 1.Pillow
@@ -48,4 +48,5 @@ usage: imgCompress.py [-h]
         -d DIRECTORY, --dir DIRECTORY Compress all images from folder / subfolder
         -f FILENAME, --file FILENAME Compress a single image file
         -q QUALITY, --quality QUALITY set quality parameter (Default:60)
+        -o OUTPUT DIRECTORY --output OUTPUT DIRECTORY Output Directory where Images will                                                be saved
 ```
